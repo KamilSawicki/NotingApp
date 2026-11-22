@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - .:/app:Z
+      - .:/app:z
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@database:5432/${POSTGRES_DB:-app}?serverVersion=19&charset=utf8
       XDEBUG_MODE: ${XDEBUG_MODE:-debug}
@@ -17,6 +17,17 @@ services:
     depends_on:
       database:
         condition: service_healthy
+
+  node:
+    image: docker.io/library/node:${NODE_VERSION:-24}-alpine
+    working_dir: /app
+    command: sh -c "corepack enable && yarn install && yarn dev"
+    environment:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: 0
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app:z
 
   database:
     image: docker.io/library/postgres:${POSTGRES_VERSION:-19}-alpine

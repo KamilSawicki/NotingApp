@@ -1,0 +1,33 @@
+{
+    "name": "noting-app",
+    "type": "module",
+    "private": true,
+    "engines": {
+        "node": ">=24"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "dependencies": {
+        "vue": "^3.5",
+        "vue-router": "^5.5"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0",
+        "@vitejs/plugin-vue": "^6.0",
+        "eslint": "^10.15",
+        "eslint-config-prettier": "^10.1",
+        "eslint-plugin-vue": "^10.12",
+        "globals": "^17.14",
+        "prettier": "3.10.1",
+        "vite": "^8.0",
+        "vite-plugin-symfony": "^8.2",
+        "vue-eslint-parser": "^10.4"
+    },
+    "packageManager": "yarn@4.19.0+sha512.2cb9e5a36f7f11f2bc6ff444830d87368d419e0d83b6a0fb6077d3e6fed0f476c9514dff4ba4d84b049bd34ef32954e550f264ad2fbbfebcba6c89e869530bba"
+}

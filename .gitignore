@@ -8,3 +8,20 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> pentatrion/vite-bundle ###
+/node_modules/
+/public/build/
+###< pentatrion/vite-bundle ###
+
+###> yarn ###
+/.yarn/*
+!/.yarn/patches/
+!/.yarn/plugins/
+/.eslintcache
+###< yarn ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###

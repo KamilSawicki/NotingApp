@@ -13,6 +13,7 @@ FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine AS base
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         intl \
+        mbstring \
         pdo_pgsql \
     && rm /usr/local/bin/install-php-extensions \
     && apk add --no-cache tini
@@ -62,6 +63,9 @@ COPY composer.json composer.lock symfony.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-progress --no-interaction
 
 COPY . .
+RUN rm -rf container
+RUN grep -q '"viteServer": null' public/build/.vite/entrypoints.json \
+    || { echo 'public/build is missing or comes from the Vite dev server, run "yarn build" first' >&2; exit 1; }
 RUN composer dump-autoload --no-dev --classmap-authoritative \
     && composer run-script --no-dev post-install-cmd \
     && chmod +x bin/console

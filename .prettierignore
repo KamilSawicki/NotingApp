@@ -1,0 +1,6 @@
+# Prettier formats only the frontend and its tooling configuration.
+/*
+!/assets/
+!/*.js
+!/package.json
+!/jsconfig.json
