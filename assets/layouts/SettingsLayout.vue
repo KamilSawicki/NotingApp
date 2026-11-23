@@ -1,8 +1,12 @@
 <script setup>
+import { computed } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { t } from '@/i18n';
+import { useUserStore } from '@/stores/user';
 
-const sections = [
+const userStore = useUserStore();
+
+const allSections = [
     {
         heading: null,
         items: [
@@ -15,6 +19,7 @@ const sections = [
     },
     {
         heading: t('settings.administration'),
+        adminOnly: true,
         items: [
             {
                 to: { name: 'settings-app-style' },
@@ -29,6 +34,8 @@ const sections = [
         ],
     },
 ];
+
+const sections = computed(() => allSections.filter((section) => !section.adminOnly || userStore.isAdmin));
 </script>
 
 <template>

@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import NotesLayout from '@/layouts/NotesLayout.vue';
 import HomeView from '@/views/HomeView.vue';
+import { useUserStore } from '@/stores/user';
 
-export default createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -34,11 +35,13 @@ export default createRouter({
                     path: 'app-style',
                     name: 'settings-app-style',
                     component: () => import('@/views/settings/SettingsAppStyleView.vue'),
+                    meta: { requiresAdmin: true },
                 },
                 {
                     path: 'users',
                     name: 'settings-users',
                     component: () => import('@/views/settings/SettingsUsersView.vue'),
+                    meta: { requiresAdmin: true },
                 },
             ],
         },
@@ -49,3 +52,11 @@ export default createRouter({
         },
     ],
 });
+
+router.beforeEach((to) => {
+    if (to.meta.requiresAdmin && !useUserStore().isAdmin) {
+        return { name: 'settings-style' };
+    }
+});
+
+export default router;
