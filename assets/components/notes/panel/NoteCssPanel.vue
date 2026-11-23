@@ -10,6 +10,8 @@ const noteStore = useNoteStore();
 const stylesStore = useStylesStore();
 
 const previewedLevel = ref(null);
+const editedLevel = ref(null);
+const draft = ref('');
 
 const levels = computed(() => [
     {
@@ -25,10 +27,21 @@ const levels = computed(() => [
         details: t('note_css.all_my_notes', {
             rules: t('note_css.rules', { count: countCssRules(stylesStore.userCss) }),
         }),
-        editTo: { name: 'settings-style' },
+        editableCss: stylesStore.userCss,
+        save: (css) => stylesStore.updateUserCss(css),
         modifier: 'user',
     },
 ]);
+
+function toggleEdit(level) {
+    if (editedLevel.value === level.number) {
+        level.save(draft.value);
+        editedLevel.value = null;
+    } else {
+        draft.value = level.editableCss;
+        editedLevel.value = level.number;
+    }
+}
 
 const noteRules = computed(() => t('note_css.rules', { count: countCssRules(noteStore.note.css) }));
 </script>
@@ -44,7 +57,14 @@ const noteRules = computed(() => t('note_css.rules', { count: countCssRules(note
                     <span class="note-css__name">{{ level.name }}</span>
                     <span class="note-css__details">{{ level.details }}</span>
                 </div>
-                <BaseButton v-if="level.editTo" :to="level.editTo">{{ $t('note_css.edit') }}</BaseButton>
+                <BaseButton
+                    v-if="level.save"
+                    :variant="editedLevel === level.number ? 'primary' : 'outline'"
+                    :aria-expanded="editedLevel === level.number"
+                    @click="toggleEdit(level)"
+                >
+                    {{ editedLevel === level.number ? $t('note_css.save') : $t('note_css.edit') }}
+                </BaseButton>
                 <BaseButton
                     v-if="level.previewCss !== undefined"
                     :active="previewedLevel === level.number"
@@ -55,6 +75,13 @@ const noteRules = computed(() => t('note_css.rules', { count: countCssRules(note
                 </BaseButton>
             </div>
             <pre v-if="previewedLevel === level.number" class="note-css__code">{{ level.previewCss }}</pre>
+            <textarea
+                v-if="editedLevel === level.number"
+                v-model="draft"
+                class="note-css__editor note-css__editor--inline"
+                :aria-label="level.name"
+                spellcheck="false"
+            />
         </div>
 
         <div class="note-css__level note-css__level--note">
@@ -184,6 +211,10 @@ const noteRules = computed(() => t('note_css.rules', { count: countCssRules(note
         font-size: 12.5px;
         line-height: 1.6;
         resize: vertical;
+
+        &--inline {
+            border-top: 1px solid var(--color-border-subtle);
+        }
     }
 }
 </style>

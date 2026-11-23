@@ -4,7 +4,9 @@ import BaseButton from '@/components/ui/BaseButton.vue';
 import BrandLogo from '@/components/ui/BrandLogo.vue';
 import CurrentUser from '@/components/layout/CurrentUser.vue';
 import NoteTree from '@/components/notes/NoteTree.vue';
+import { useLayoutStore } from '@/stores/layout';
 
+const layout = useLayoutStore();
 const query = ref('');
 </script>
 
@@ -13,6 +15,15 @@ const query = ref('');
         <header class="sidebar__header">
             <BrandLogo class="sidebar__brand" />
             <BaseButton square :title="$t('sidebar.new_root_note')">+</BaseButton>
+            <BaseButton
+                variant="ghost"
+                square
+                :title="$t('sidebar.hide')"
+                :aria-label="$t('sidebar.hide')"
+                @click="layout.closeSidebar()"
+            >
+                ×
+            </BaseButton>
         </header>
 
         <div class="sidebar__search">

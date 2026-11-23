@@ -22,7 +22,7 @@ const activeSidePanelTab = ref('related');
 
 <template>
     <div class="notes-layout">
-        <AppSidebar />
+        <AppSidebar v-show="layout.isSidebarOpen" />
 
         <main class="notes-layout__main">
             <RouterView />

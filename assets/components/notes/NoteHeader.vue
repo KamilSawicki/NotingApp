@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
+import PanelLeftIcon from '@/components/ui/icons/PanelLeftIcon.vue';
+import PanelRightIcon from '@/components/ui/icons/PanelRightIcon.vue';
 import { t } from '@/i18n';
 import { useLayoutStore } from '@/stores/layout';
 import { useNotesStore } from '@/stores/notes';
@@ -24,6 +26,16 @@ const breadcrumb = computed(() =>
     <header class="note-header">
         <div class="note-header__breadcrumb">{{ breadcrumb }}</div>
         <div class="note-header__row">
+            <BaseButton
+                v-if="!layout.isSidebarOpen"
+                size="md"
+                square
+                :title="$t('home.show_sidebar')"
+                :aria-label="$t('home.show_sidebar')"
+                @click="layout.openSidebar()"
+            >
+                <PanelLeftIcon />
+            </BaseButton>
             <input
                 class="note-header__title"
                 :value="note.title"
@@ -32,12 +44,14 @@ const breadcrumb = computed(() =>
                 @input="notesStore.rename(note.id, $event.target.value)"
             />
             <BaseButton
+                v-if="!layout.isSidePanelOpen"
                 size="md"
-                :active="layout.isSidePanelOpen"
+                square
                 :title="$t('home.toggle_side_panel')"
-                @click="layout.toggleSidePanel()"
+                :aria-label="$t('home.toggle_side_panel')"
+                @click="layout.openSidePanel()"
             >
-                {{ layout.isSidePanelOpen ? '→' : '←' }}
+                <PanelRightIcon />
             </BaseButton>
         </div>
     </header>
@@ -64,6 +78,7 @@ const breadcrumb = computed(() =>
         display: flex;
         align-items: center;
         gap: 12px;
+        min-height: 32px;
     }
 
     &__title {

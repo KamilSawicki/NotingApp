@@ -10,7 +10,11 @@ pre { background: #f1ece2; padding: 12px 14px; border-radius: 6px; overflow: aut
 blockquote { margin: 0 0 14px; padding-left: 14px; border-left: 3px solid #ddd5c6; color: #6b6357; }
 a { color: #2f6b4a; }
 ul, ol { margin: 0 0 14px; padding-left: 22px; }
-li { margin: 2px 0; }`;
+li { margin: 2px 0; }
+table { width: 100%; margin: 0 0 14px; border-collapse: collapse; font-size: 0.94em; }
+th, td { padding: 6px 10px; border: 1px solid #ddd5c6; text-align: left; vertical-align: top; }
+th { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; background: #f1ece2; }
+tbody tr:nth-child(even) td { background: #faf7f1; }`;
 
 const SAMPLE_USER_CSS = `.note { font-size: 15.5px; }
 h1 { color: #2f6b4a; }
@@ -20,5 +24,9 @@ export const useStylesStore = defineStore('styles', () => {
     const appCss = ref(SAMPLE_APP_CSS);
     const userCss = ref(SAMPLE_USER_CSS);
 
-    return { appCss, userCss };
+    function updateUserCss(css) {
+        userCss.value = css;
+    }
+
+    return { appCss, userCss, updateUserCss };
 });
