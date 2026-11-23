@@ -59,6 +59,7 @@ note_css:
         note: This note
         user: My style
     optional: optional · {rules}
+    preview: Preview
     rules: '{count, plural, =0 {no rules} one {# rule} other {# rules}}'
     shared: shared · {rules}
 note_tree:

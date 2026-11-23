@@ -1,22 +1,22 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { t } from '@/i18n';
 import { useNoteStore } from '@/stores/note';
 import { useStylesStore } from '@/stores/styles';
-import { useUserStore } from '@/stores/user';
 import { countCssRules } from '@/utils/scopeCss';
 
 const noteStore = useNoteStore();
 const stylesStore = useStylesStore();
-const userStore = useUserStore();
+
+const previewedLevel = ref(null);
 
 const levels = computed(() => [
     {
         number: 1,
         name: t('note_css.level.app'),
         details: t('note_css.shared', { rules: t('note_css.rules', { count: countCssRules(stylesStore.appCss) }) }),
-        editTo: userStore.isAdmin ? { name: 'settings-app-style' } : null,
+        previewCss: stylesStore.appCss,
         modifier: 'app',
     },
     {
@@ -38,16 +38,27 @@ const noteRules = computed(() => t('note_css.rules', { count: countCssRules(note
         <h3 class="note-css__heading">{{ $t('note_css.cascade') }}</h3>
 
         <div v-for="level in levels" :key="level.number" class="note-css__level">
-            <span class="note-css__number" :class="`note-css__number--${level.modifier}`">{{ level.number }}</span>
-            <div class="note-css__text">
-                <span class="note-css__name">{{ level.name }}</span>
-                <span class="note-css__details">{{ level.details }}</span>
+            <div class="note-css__row">
+                <span class="note-css__number" :class="`note-css__number--${level.modifier}`">{{ level.number }}</span>
+                <div class="note-css__text">
+                    <span class="note-css__name">{{ level.name }}</span>
+                    <span class="note-css__details">{{ level.details }}</span>
+                </div>
+                <BaseButton v-if="level.editTo" :to="level.editTo">{{ $t('note_css.edit') }}</BaseButton>
+                <BaseButton
+                    v-if="level.previewCss !== undefined"
+                    :active="previewedLevel === level.number"
+                    :aria-expanded="previewedLevel === level.number"
+                    @click="previewedLevel = previewedLevel === level.number ? null : level.number"
+                >
+                    {{ $t('note_css.preview') }}
+                </BaseButton>
             </div>
-            <BaseButton v-if="level.editTo" :to="level.editTo">{{ $t('note_css.edit') }}</BaseButton>
+            <pre v-if="previewedLevel === level.number" class="note-css__code">{{ level.previewCss }}</pre>
         </div>
 
         <div class="note-css__level note-css__level--note">
-            <div class="note-css__note-header">
+            <div class="note-css__row">
                 <span class="note-css__number note-css__number--note">{{ levels.length + 1 }}</span>
                 <div class="note-css__text">
                     <span class="note-css__name">{{ $t('note_css.level.note') }}</span>
@@ -83,29 +94,39 @@ const noteRules = computed(() => t('note_css.rules', { count: countCssRules(note
 
     &__level {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 10px;
+        flex-direction: column;
+        overflow: hidden;
         border: 1px solid var(--color-border-subtle);
         border-radius: var(--radius-md);
         background: var(--color-surface);
 
         &--note {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0;
-            padding: 0;
-            overflow: hidden;
             border-color: var(--color-css-note-border);
+
+            .note-css__row {
+                border-bottom: 1px solid var(--color-css-note-bg);
+            }
         }
     }
 
-    &__note-header {
+    &__row {
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 9px 10px;
-        border-bottom: 1px solid var(--color-css-note-bg);
+    }
+
+    &__code {
+        max-height: 240px;
+        margin: 0;
+        padding: 10px 12px;
+        overflow: auto;
+        border-top: 1px solid var(--color-border-subtle);
+        color: var(--color-text-secondary);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        line-height: 1.6;
+        white-space: pre-wrap;
     }
 
     &__number {
