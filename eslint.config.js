@@ -39,7 +39,7 @@ export default defineConfig([
                 'error',
                 {
                     allowlist: [
-                        ...'( ) , . & + - = * / # % ! ? : [ ] { } < > · • ‐ – — − | × ← → ✎'.split(' '),
+                        ...'( ) , . & + - = * / # % ! ? : [ ] { } < > · • ‐ – — − | × ← → ✎ ▾'.split(' '),
                         'AI',
                         'N',
                         'NotingApp',

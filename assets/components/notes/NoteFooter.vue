@@ -18,6 +18,9 @@ const hidden = computed(() => countHidden(noteStore.note.content));
 
 <template>
     <footer class="note-footer">
+        <span :class="{ 'note-footer__unsaved': noteStore.isDirty }">
+            {{ noteStore.isDirty ? $t('note.footer.unsaved') : $t('note.footer.saved') }}
+        </span>
         <span>{{ $t('note.words', { count: words }) }}</span>
         <span>{{ $t('note.footer.ai', { mode: $t(`note.ai.${note.aiAccess}`) }) }}</span>
         <span v-if="hidden" class="note-footer__hidden">{{ $t('note.footer.hidden', { count: hidden }) }}</span>
@@ -38,6 +41,10 @@ const hidden = computed(() => countHidden(noteStore.note.content));
     font-family: var(--font-mono);
     font-size: 11.5px;
     white-space: nowrap;
+
+    &__unsaved {
+        color: var(--color-text);
+    }
 
     &__hidden {
         color: var(--color-hidden-text);

@@ -82,10 +82,21 @@ export const useNoteStore = defineStore('note', () => {
 
     const note = ref(null);
     const viewedVersionId = ref(null);
+    const savedSnapshot = ref(null);
 
     const relatedNotes = computed(() =>
         (note.value?.relatedIds ?? []).map((id) => notesStore.find(id)).filter(Boolean),
     );
+
+    function snapshot() {
+        return JSON.stringify({
+            title: notesStore.find(note.value.id)?.title,
+            content: note.value.content,
+            css: note.value.css,
+        });
+    }
+
+    const isDirty = computed(() => note.value !== null && snapshot() !== savedSnapshot.value);
 
     const viewedVersion = computed(
         () => note.value?.versions.find((version) => version.id === viewedVersionId.value) ?? null,
@@ -102,10 +113,30 @@ export const useNoteStore = defineStore('note', () => {
             relatedIds: sample.relatedIds ?? [],
             versions: sample.versions ?? [],
         });
+        savedSnapshot.value = snapshot();
+    }
+
+    async function save() {
+        savedSnapshot.value = snapshot();
+    }
+
+    async function exportPdf() {}
+
+    function forgetNotes(ids) {
+        if (!note.value) {
+            return;
+        }
+
+        if (ids.has(note.value.id)) {
+            clear();
+        } else {
+            note.value.relatedIds = note.value.relatedIds.filter((id) => !ids.has(id));
+        }
     }
 
     function clear() {
         note.value = null;
+        savedSnapshot.value = null;
         viewedVersionId.value = null;
     }
 
@@ -154,7 +185,11 @@ export const useNoteStore = defineStore('note', () => {
         note,
         relatedNotes,
         viewedVersion,
+        isDirty,
         load,
+        save,
+        exportPdf,
+        forgetNotes,
         clear,
         updateContent,
         updateCss,

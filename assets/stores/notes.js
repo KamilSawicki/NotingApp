@@ -86,6 +86,22 @@ export const useNotesStore = defineStore('notes', () => {
         }
     }
 
+    function create(title) {
+        const note = { id: crypto.randomUUID(), title, parentId: null, aiAccess: AiAccess.FULL };
+
+        notes.value.push(note);
+
+        return note;
+    }
+
+    function remove(id) {
+        const removedIds = new Set([id, ...descendantIdsOf(id)]);
+
+        notes.value = notes.value.filter((note) => !removedIds.has(note.id));
+
+        return removedIds;
+    }
+
     function select(id) {
         selectedId.value = id;
     }
@@ -109,5 +125,7 @@ export const useNotesStore = defineStore('notes', () => {
         select,
         rename,
         move,
+        create,
+        remove,
     };
 });

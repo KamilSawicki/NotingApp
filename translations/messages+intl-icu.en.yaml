@@ -33,10 +33,24 @@ note:
         deny: No access
         full: Full access
     breadcrumb_root: Notes
+    default_title: New note
+    delete:
+        cancel: Cancel
+        confirm: Delete
+        message: '{subnotes, plural, =0 {The note “{title}” will be deleted.} one {The note “{title}” and its # subnote will be deleted.} other {The note “{title}” and its # subnotes will be deleted.}}'
+        title: Delete note?
     editor_label: Note content
+    export:
+        anonymous: Anonymous export
+        anonymous_description: Without sensitive data, author and metadata.
+        full: Export PDF
+        full_description: The full note with the chosen options.
+        more: More export options
     footer:
         ai: 'AI: {mode}'
         hidden: '{count, plural, one {# sensitive fragment} other {# sensitive fragments}}'
+        saved: Saved
+        unsaved: Unsaved changes
     hidden:
         title: Sensitive data · {description}
     mode:
@@ -44,6 +58,8 @@ note:
         preview: Preview
         split: Split
     not_found: This note does not exist.
+    save: Save
+    save_shortcut: Save (Ctrl+S)
     title_label: Note title
     version_banner:
         close: Close
@@ -67,6 +83,7 @@ note_css:
 note_tree:
     ai_denied: The AI agent has no access to this note
     collapse: Collapse
+    delete: Delete note
     empty: No notes
     expand: Expand
     no_matches: No notes match the search.

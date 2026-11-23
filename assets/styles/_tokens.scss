@@ -28,7 +28,10 @@
     --color-accent-soft: oklch(0.9 0.03 150);
     --color-accent-strong: oklch(0.38 0.12 150);
 
+    --color-overlay: oklch(0.2 0.01 75 / 0.35);
+
     --color-danger: oklch(0.5 0.17 25);
+    --color-danger-hover: oklch(0.44 0.17 25);
     --color-danger-bg: oklch(0.9 0.04 25);
 
     --color-hidden-text: oklch(0.42 0.1 65);
@@ -63,6 +66,7 @@
     --radius-pill: 999px;
 
     --shadow-control: 0 1px 2px oklch(0.2 0.02 75 / 0.12);
+    --shadow-dialog: 0 24px 60px oklch(0.2 0.02 75 / 0.2);
     --shadow-popover: 0 12px 32px oklch(0.2 0.02 75 / 0.12);
     --shadow-overlay: -12px 0 32px oklch(0.2 0.02 75 / 0.14);
 

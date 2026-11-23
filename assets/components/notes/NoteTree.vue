@@ -2,6 +2,10 @@
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import AiDeniedBadge from '@/components/notes/AiDeniedBadge.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
+import { t } from '@/i18n';
+import { useNoteStore } from '@/stores/note';
 import { AiAccess, useNotesStore } from '@/stores/notes';
 
 const props = defineProps({
@@ -13,7 +17,32 @@ const props = defineProps({
 
 const router = useRouter();
 const notesStore = useNotesStore();
+const noteStore = useNoteStore();
 const expandedIds = ref(new Set());
+const noteToDelete = ref(null);
+
+const deleteMessage = computed(() =>
+    noteToDelete.value
+        ? t('note.delete.message', {
+              title: noteToDelete.value.title,
+              subnotes: notesStore.descendantIdsOf(noteToDelete.value.id).size,
+          })
+        : '',
+);
+
+async function deleteNote() {
+    const { id } = noteToDelete.value;
+    const removedIds = new Set([id, ...notesStore.descendantIdsOf(id)]);
+
+    noteToDelete.value = null;
+
+    if (removedIds.has(notesStore.selectedId)) {
+        await router.push({ name: 'home' });
+    }
+
+    notesStore.remove(id);
+    noteStore.forgetNotes(removedIds);
+}
 
 const normalizedQuery = computed(() => props.query.trim().toLowerCase());
 
@@ -110,12 +139,32 @@ watch(
             <span class="note-tree__title">{{ row.note.title }}</span>
 
             <AiDeniedBadge v-if="row.note.aiAccess === AiAccess.DENY" />
+            <BaseButton
+                v-if="row.note.id === notesStore.selectedId"
+                variant="ghost"
+                class="note-tree__delete"
+                :title="$t('note_tree.delete')"
+                :aria-label="$t('note_tree.delete')"
+                @click.stop="noteToDelete = row.note"
+            >
+                ×
+            </BaseButton>
         </li>
     </ul>
 
     <p v-else class="note-tree__empty">
         {{ normalizedQuery ? $t('note_tree.no_matches') : $t('note_tree.empty') }}
     </p>
+
+    <ConfirmDialog
+        v-if="noteToDelete"
+        :title="$t('note.delete.title')"
+        :message="deleteMessage"
+        :confirm-label="$t('note.delete.confirm')"
+        :cancel-label="$t('note.delete.cancel')"
+        @confirm="deleteNote"
+        @cancel="noteToDelete = null"
+    />
 </template>
 
 <style lang="scss" scoped>
@@ -174,6 +223,18 @@ watch(
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    &__delete {
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        font-size: 13px;
+
+        &:hover {
+            background: var(--color-danger-bg);
+            color: var(--color-danger);
+        }
     }
 
     &__empty {

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onUnmounted, ref, useTemplateRef, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import NoteEditor from '@/components/notes/NoteEditor.vue';
 import NoteFooter from '@/components/notes/NoteFooter.vue';
 import NoteHeader from '@/components/notes/NoteHeader.vue';
@@ -43,7 +43,20 @@ watch(
     { immediate: true },
 );
 
+function onKeydown(event) {
+    if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.key.toLowerCase() === 's') {
+        event.preventDefault();
+
+        if (noteStore.isDirty) {
+            noteStore.save();
+        }
+    }
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown));
+
 onUnmounted(() => {
+    window.removeEventListener('keydown', onKeydown);
     notesStore.select(null);
     noteStore.clear();
 });

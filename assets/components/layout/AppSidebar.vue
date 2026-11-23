@@ -1,20 +1,39 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BrandLogo from '@/components/ui/BrandLogo.vue';
 import CurrentUser from '@/components/layout/CurrentUser.vue';
 import NoteTree from '@/components/notes/NoteTree.vue';
+import { t } from '@/i18n';
 import { useLayoutStore } from '@/stores/layout';
+import { useNotesStore } from '@/stores/notes';
 
+const router = useRouter();
 const layout = useLayoutStore();
+const notesStore = useNotesStore();
 const query = ref('');
+
+function createNote() {
+    const note = notesStore.create(t('note.default_title'));
+
+    query.value = '';
+    router.push({ name: 'note', params: { id: note.id } });
+}
 </script>
 
 <template>
     <aside class="sidebar">
         <header class="sidebar__header">
             <BrandLogo class="sidebar__brand" />
-            <BaseButton square :title="$t('sidebar.new_root_note')">+</BaseButton>
+            <BaseButton
+                square
+                :title="$t('sidebar.new_root_note')"
+                :aria-label="$t('sidebar.new_root_note')"
+                @click="createNote"
+            >
+                +
+            </BaseButton>
             <BaseButton
                 variant="ghost"
                 square

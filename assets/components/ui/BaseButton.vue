@@ -6,7 +6,7 @@ const props = defineProps({
     variant: {
         type: String,
         default: 'outline',
-        validator: (value) => ['outline', 'ghost', 'primary'].includes(value),
+        validator: (value) => ['outline', 'ghost', 'primary', 'danger'].includes(value),
     },
     size: {
         type: String,
@@ -115,6 +115,17 @@ const classes = computed(() => [
 
         &:hover {
             background: var(--color-primary-hover);
+            color: var(--color-text-inverse);
+        }
+    }
+
+    &--danger {
+        background: var(--color-danger);
+        color: var(--color-text-inverse);
+        font-weight: 500;
+
+        &:hover {
+            background: var(--color-danger-hover);
             color: var(--color-text-inverse);
         }
     }

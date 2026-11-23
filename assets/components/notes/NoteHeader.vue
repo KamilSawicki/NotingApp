@@ -1,10 +1,12 @@
 <script setup>
 import { computed } from 'vue';
+import NoteExportButton from '@/components/notes/NoteExportButton.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import PanelLeftIcon from '@/components/ui/icons/PanelLeftIcon.vue';
 import PanelRightIcon from '@/components/ui/icons/PanelRightIcon.vue';
 import { t } from '@/i18n';
 import { useLayoutStore } from '@/stores/layout';
+import { useNoteStore } from '@/stores/note';
 import { useNotesStore } from '@/stores/notes';
 
 const props = defineProps({
@@ -16,6 +18,7 @@ const props = defineProps({
 
 const layout = useLayoutStore();
 const notesStore = useNotesStore();
+const noteStore = useNoteStore();
 
 const breadcrumb = computed(() =>
     [t('note.breadcrumb_root'), ...notesStore.ancestorsOf(props.note.id).map((ancestor) => ancestor.title)].join(' / '),
@@ -43,6 +46,16 @@ const breadcrumb = computed(() =>
                 :placeholder="$t('note.title.placeholder', {}, 'fields')"
                 @input="notesStore.rename(note.id, $event.target.value)"
             />
+            <BaseButton
+                :variant="noteStore.isDirty ? 'primary' : 'outline'"
+                size="md"
+                :disabled="!noteStore.isDirty"
+                :title="$t('note.save_shortcut')"
+                @click="noteStore.save()"
+            >
+                {{ $t('note.save') }}
+            </BaseButton>
+            <NoteExportButton />
             <BaseButton
                 v-if="!layout.isSidePanelOpen"
                 size="md"
