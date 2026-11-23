@@ -37,13 +37,39 @@ export const useNotesStore = defineStore('notes', () => {
         return children;
     });
 
+    const notesById = computed(() => new Map(notes.value.map((note) => [note.id, note])));
+
     function childrenOf(parentId) {
         return childrenByParentId.value.get(parentId) ?? [];
+    }
+
+    function find(id) {
+        return notesById.value.get(id) ?? null;
+    }
+
+    function ancestorsOf(id) {
+        const ancestors = [];
+        let parent = find(find(id)?.parentId);
+
+        while (parent) {
+            ancestors.unshift(parent);
+            parent = find(parent.parentId);
+        }
+
+        return ancestors;
     }
 
     function select(id) {
         selectedId.value = id;
     }
 
-    return { notes, selectedId, childrenOf, select };
+    function rename(id, title) {
+        const note = find(id);
+
+        if (note) {
+            note.title = title;
+        }
+    }
+
+    return { notes, selectedId, childrenOf, find, ancestorsOf, select, rename };
 });

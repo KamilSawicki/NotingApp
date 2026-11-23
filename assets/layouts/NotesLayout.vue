@@ -2,10 +2,15 @@
 import { ref } from 'vue';
 import AppSidebar from '@/components/layout/AppSidebar.vue';
 import SidePanel from '@/components/layout/SidePanel.vue';
+import NoteCssPanel from '@/components/notes/panel/NoteCssPanel.vue';
+import NoteVersionsPanel from '@/components/notes/panel/NoteVersionsPanel.vue';
+import RelatedNotesPanel from '@/components/notes/panel/RelatedNotesPanel.vue';
 import { useLayoutStore } from '@/stores/layout';
+import { useNoteStore } from '@/stores/note';
 import { t } from '@/i18n';
 
 const layout = useLayoutStore();
+const noteStore = useNoteStore();
 
 const sidePanelTabs = [
     { key: 'related', label: t('side_panel.tabs.related') },
@@ -31,13 +36,16 @@ const activeSidePanelTab = ref('related');
             @close="layout.closeSidePanel()"
         >
             <template #related>
-                <p class="notes-layout__panel-empty">{{ $t('side_panel.empty.related') }}</p>
+                <RelatedNotesPanel v-if="noteStore.note" />
+                <p v-else class="notes-layout__panel-empty">{{ $t('side_panel.empty.related') }}</p>
             </template>
             <template #css>
-                <p class="notes-layout__panel-empty">{{ $t('side_panel.empty.css') }}</p>
+                <NoteCssPanel v-if="noteStore.note" />
+                <p v-else class="notes-layout__panel-empty">{{ $t('side_panel.empty.css') }}</p>
             </template>
             <template #versions>
-                <p class="notes-layout__panel-empty">{{ $t('side_panel.empty.versions') }}</p>
+                <NoteVersionsPanel v-if="noteStore.note" />
+                <p v-else class="notes-layout__panel-empty">{{ $t('side_panel.empty.versions') }}</p>
             </template>
         </SidePanel>
     </div>

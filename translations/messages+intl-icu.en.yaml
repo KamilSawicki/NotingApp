@@ -4,12 +4,54 @@ home:
 not_found:
     back: Back to notes
     title: Page not found
+note:
+    ai:
+        deny: No access
+        full: Full access
+    breadcrumb_root: Notes
+    editor_label: Note content
+    footer:
+        ai: 'AI: {mode}'
+        hidden: '{count, plural, one {# private fragment} other {# private fragments}}'
+    hidden:
+        title: Hidden from AI · {description}
+    mode:
+        edit: Edit
+        preview: Preview
+        split: Split
+    not_found: This note does not exist.
+    title_label: Note title
+    version_banner:
+        close: Close
+        meta: '{date} · {author} · read-only'
+        restore: Restore this version
+        title: Archived version
+    words: '{count, plural, one {# word} other {# words}}'
+note_css:
+    all_my_notes: all my notes · {rules}
+    cascade: Cascade · each level overrides the previous
+    edit: Edit
+    level:
+        app: App
+        note: This note
+        user: My style
+    optional: optional · {rules}
+    rules: '{count, plural, =0 {no rules} one {# rule} other {# rules}}'
+    shared: shared · {rules}
 note_tree:
     ai_denied: The AI agent has no access to this note
     collapse: Collapse
     empty: No notes
     expand: Expand
     no_matches: No notes match the search.
+related:
+    add: Add related note
+    description: Related notes are independent of the tree and visible in both notes.
+    done: Done
+    empty: No related notes
+    no_results: No matching notes
+    remove: Remove link
+    top_level: top level
 settings:
     administration: Administration
     app_style:
@@ -45,3 +87,10 @@ user:
     roles:
         admin: Administrator
         user: User
+versions:
+    created: created
+    current: Current version
+    description: Versions are saved automatically every hour of editing. Click one to preview it.
+    meta: '{author} · {words}'
+    now: now · {words}
+    save: Save current version

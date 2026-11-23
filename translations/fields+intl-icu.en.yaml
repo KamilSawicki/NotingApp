@@ -1,3 +1,11 @@
+note:
+    css:
+        placeholder: "h2 '{' color: … '}'"
+    title:
+        placeholder: Untitled
+related:
+    search:
+        placeholder: Search notes…
 sidebar:
     search:
         placeholder: Search the tree…

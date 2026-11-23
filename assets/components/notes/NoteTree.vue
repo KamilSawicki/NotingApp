@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import AiDeniedBadge from '@/components/notes/AiDeniedBadge.vue';
 import { AiAccess, useNotesStore } from '@/stores/notes';
 
@@ -10,6 +11,7 @@ const props = defineProps({
     },
 });
 
+const router = useRouter();
 const notesStore = useNotesStore();
 const expandedIds = ref(new Set());
 
@@ -78,7 +80,7 @@ function toggle(note) {
             :aria-level="row.depth + 1"
             :aria-expanded="row.hasChildren ? row.expanded : undefined"
             :aria-selected="row.note.id === notesStore.selectedId"
-            @click="notesStore.select(row.note.id)"
+            @click="router.push({ name: 'note', params: { id: row.note.id } })"
         >
             <button
                 v-if="row.hasChildren"

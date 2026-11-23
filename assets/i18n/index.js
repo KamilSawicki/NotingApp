@@ -24,6 +24,10 @@ export function t(key, params = {}, domain = 'messages') {
     return formatters.get(id).format(params);
 }
 
+export function formatDateTime(isoDate) {
+    return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(isoDate));
+}
+
 export default {
     install(app) {
         app.config.globalProperties.$t = t;

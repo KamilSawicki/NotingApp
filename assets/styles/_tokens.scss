@@ -2,6 +2,7 @@
     --color-bg: oklch(0.985 0.003 75);
     --color-bg-sunken: oklch(0.97 0.004 75);
     --color-surface: oklch(0.995 0.004 85);
+    --color-editor-bg: oklch(0.99 0.002 75);
     --color-hover: oklch(0.94 0.006 75);
     --color-hover-subtle: oklch(0.95 0.006 75);
     --color-selected: oklch(0.925 0.014 80);
@@ -39,10 +40,16 @@
     --color-ai-denied-strike: oklch(0.74 0.008 75);
     --color-ai-denied-bg: oklch(1 0 0);
 
+    --color-css-app: oklch(0.4 0.012 75);
+    --color-css-app-bg: oklch(0.93 0.005 75);
     --color-css-user: oklch(0.42 0.12 150);
     --color-css-user-bg: oklch(0.94 0.03 150);
     --color-css-note: oklch(0.45 0.14 320);
     --color-css-note-bg: oklch(0.95 0.03 320);
+    --color-css-note-border: oklch(0.82 0.06 320);
+
+    --color-diff-added: oklch(0.45 0.1 150);
+    --color-diff-removed: oklch(0.5 0.15 25);
 
     --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
@@ -54,6 +61,7 @@
     --radius-lg: 12px;
     --radius-pill: 999px;
 
+    --shadow-control: 0 1px 2px oklch(0.2 0.02 75 / 0.12);
     --shadow-popover: 0 12px 32px oklch(0.2 0.02 75 / 0.12);
     --shadow-overlay: -12px 0 32px oklch(0.2 0.02 75 / 0.14);
 
