@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import AiDeniedBadge from '@/components/notes/AiDeniedBadge.vue';
 import { AiAccess, useNotesStore } from '@/stores/notes';
@@ -63,6 +63,18 @@ function toggle(note) {
 
     expandedIds.value = ids;
 }
+
+watch(
+    () => notesStore.selectedId,
+    (selectedId) => {
+        const ancestors = selectedId ? notesStore.ancestorsOf(selectedId) : [];
+
+        if (ancestors.some((ancestor) => !expandedIds.value.has(ancestor.id))) {
+            expandedIds.value = new Set([...expandedIds.value, ...ancestors.map((ancestor) => ancestor.id)]);
+        }
+    },
+    { immediate: true },
+);
 </script>
 
 <template>

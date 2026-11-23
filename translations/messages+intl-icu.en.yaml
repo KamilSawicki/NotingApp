@@ -1,3 +1,26 @@
+editor:
+    hidden:
+        button: Sensitive data
+    placeholder:
+        code: code
+        hidden_description: description
+        hidden_value: sensitive value
+        text: text
+    tools:
+        bold: Bold (Ctrl+B)
+        bullet_list: Bulleted list
+        code_block: Code block
+        heading: Heading {level}
+        hidden: Insert sensitive data (Ctrl+Shift+H)
+        horizontal_rule: Horizontal rule
+        inline_code: Inline code
+        italic: Italic (Ctrl+I)
+        label: Formatting
+        link: Link
+        ordered_list: Numbered list
+        quote: Quote
+        strikethrough: Strikethrough
+        task_list: Task list
 home:
     empty: Select a note from the tree or create a new one.
     toggle_side_panel: Side panel
@@ -12,9 +35,9 @@ note:
     editor_label: Note content
     footer:
         ai: 'AI: {mode}'
-        hidden: '{count, plural, one {# private fragment} other {# private fragments}}'
+        hidden: '{count, plural, one {# sensitive fragment} other {# sensitive fragments}}'
     hidden:
-        title: Hidden from AI · {description}
+        title: Sensitive data · {description}
     mode:
         edit: Edit
         preview: Preview

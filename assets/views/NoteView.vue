@@ -1,9 +1,10 @@
 <script setup>
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import NoteEditor from '@/components/notes/NoteEditor.vue';
 import NoteFooter from '@/components/notes/NoteFooter.vue';
 import NoteHeader from '@/components/notes/NoteHeader.vue';
 import NotePreview from '@/components/notes/NotePreview.vue';
+import NoteToolbar from '@/components/notes/NoteToolbar.vue';
 import VersionBanner from '@/components/notes/VersionBanner.vue';
 import SegmentedControl from '@/components/ui/SegmentedControl.vue';
 import { t } from '@/i18n';
@@ -26,6 +27,7 @@ const viewModes = [
     { value: 'preview', label: t('note.mode.preview') },
 ];
 const viewMode = ref('split');
+const editor = useTemplateRef('editor');
 
 const summary = computed(() => notesStore.find(props.id));
 const viewedVersion = computed(() => noteStore.viewedVersion);
@@ -51,14 +53,16 @@ onUnmounted(() => {
     <div v-if="summary && noteStore.note" class="note-view">
         <NoteHeader :note="summary" />
 
-        <div class="note-view__toolbar">
-            <SegmentedControl v-model="viewMode" :options="viewModes" />
-        </div>
+        <NoteToolbar :disabled="!showEditor" @command="editor?.run($event)">
+            <template #end>
+                <SegmentedControl v-model="viewMode" :options="viewModes" />
+            </template>
+        </NoteToolbar>
 
         <VersionBanner v-if="viewedVersion" />
 
         <div class="note-view__panes">
-            <NoteEditor v-if="showEditor" />
+            <NoteEditor v-if="showEditor" ref="editor" />
             <NotePreview
                 v-if="showPreview"
                 :content="viewedVersion?.content ?? noteStore.note.content"
@@ -78,13 +82,6 @@ onUnmounted(() => {
     flex: 1;
     flex-direction: column;
     min-height: 0;
-
-    &__toolbar {
-        display: flex;
-        justify-content: flex-end;
-        padding: 6px 16px;
-        border-bottom: 1px solid var(--color-divider);
-    }
 
     &__panes {
         display: flex;

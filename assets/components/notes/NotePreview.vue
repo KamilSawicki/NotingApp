@@ -55,9 +55,10 @@ onUnmounted(() => {
     }
 
     :deep(.note-hidden) {
-        text-decoration: underline dotted var(--color-hidden-border);
-        text-decoration-thickness: 1.5px;
-        text-underline-offset: 3px;
+        padding: 0 3px;
+        border-radius: 3px;
+        background: var(--color-hidden-bg);
+        box-decoration-break: clone;
     }
 }
 </style>

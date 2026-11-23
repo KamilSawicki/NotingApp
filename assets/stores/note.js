@@ -10,7 +10,7 @@ The **Symfony** backend exposes a REST API for the Vue frontend and an MCP serve
 
 OAuth 2.1 with a BFF session for the frontend. Staging test account: #[hidden](qa-admin / Tr0ub4dor&3)(Staging credentials)
 
-> The AI agent never receives fragments marked as private.
+> The AI agent never receives fragments marked as sensitive.
 
 ## Endpoints
 
@@ -60,7 +60,7 @@ const SAMPLE_NOTES = {
     n4: { content: '# Q1 roadmap\n\n- PDF export\n- More AI access modes\n' },
     n5: {
         content:
-            '# MCP server\n\nThe agent sees only notes with **Full access**.\n\n- Private fragments are cut out before sending\n- The mode is checked on every request\n',
+            '# MCP server\n\nThe agent sees only notes with **Full access**.\n\n- Sensitive fragments are cut out before sending\n- The mode is checked on every request\n',
         relatedIds: ['n3'],
     },
     n6: { content: '# Personal\n' },

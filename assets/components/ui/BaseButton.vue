@@ -25,6 +25,11 @@ const props = defineProps({
         type: [String, Object],
         default: null,
     },
+    type: {
+        type: String,
+        default: 'button',
+        validator: (value) => ['button', 'submit', 'reset'].includes(value),
+    },
 });
 
 const classes = computed(() => [
@@ -39,7 +44,7 @@ const classes = computed(() => [
     <RouterLink v-if="to" :to="to" :class="classes">
         <slot />
     </RouterLink>
-    <button v-else type="button" :class="classes">
+    <button v-else :type="type" :class="classes">
         <slot />
     </button>
 </template>
@@ -62,6 +67,11 @@ const classes = computed(() => [
 
     &:hover {
         color: var(--color-text-control);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        pointer-events: none;
     }
 
     &--sm {
