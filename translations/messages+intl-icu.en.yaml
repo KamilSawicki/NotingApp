@@ -4,6 +4,12 @@ home:
 not_found:
     back: Back to notes
     title: Page not found
+note_tree:
+    ai_denied: The AI agent has no access to this note
+    collapse: Collapse
+    empty: No notes
+    expand: Expand
+    no_matches: No notes match the search.
 settings:
     administration: Administration
     app_style:
@@ -32,7 +38,6 @@ side_panel:
         related: Related
         versions: Versions
 sidebar:
-    empty: No notes
     new_root_note: New top-level note
     settings: Settings
     tree_label: Note tree

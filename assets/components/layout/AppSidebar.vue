@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BrandLogo from '@/components/ui/BrandLogo.vue';
+import NoteTree from '@/components/notes/NoteTree.vue';
 
 const query = ref('');
 </script>
@@ -23,7 +24,7 @@ const query = ref('');
         </div>
 
         <nav class="sidebar__tree" :aria-label="$t('sidebar.tree_label')">
-            <p class="sidebar__empty">{{ $t('sidebar.empty') }}</p>
+            <NoteTree :query="query" />
         </nav>
 
         <footer class="sidebar__footer">
@@ -76,12 +77,6 @@ const query = ref('');
         flex: 1;
         overflow: auto;
         padding: 2px 0 12px;
-    }
-
-    &__empty {
-        margin: 12px 16px;
-        color: var(--color-text-muted);
-        font-size: 13px;
     }
 
     &__footer {

@@ -10,6 +10,7 @@
     --color-text-secondary: oklch(0.4 0.012 75);
     --color-text-muted: oklch(0.52 0.012 75);
     --color-text-control: oklch(0.35 0.012 75);
+    --color-text-faint: oklch(0.55 0.012 75);
     --color-text-inverse: oklch(0.985 0.003 75);
     --color-primary-hover: oklch(0.34 0.012 75);
 
@@ -32,6 +33,11 @@
     --color-hidden-text: oklch(0.42 0.1 65);
     --color-hidden-bg: oklch(0.97 0.035 85);
     --color-hidden-border: oklch(0.72 0.1 75);
+
+    --color-ai-denied: oklch(0.68 0.008 75);
+    --color-ai-denied-border: oklch(0.78 0.008 75);
+    --color-ai-denied-strike: oklch(0.74 0.008 75);
+    --color-ai-denied-bg: oklch(1 0 0);
 
     --color-css-user: oklch(0.42 0.12 150);
     --color-css-user-bg: oklch(0.94 0.03 150);
