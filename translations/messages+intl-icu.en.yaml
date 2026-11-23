@@ -72,11 +72,15 @@ note_tree:
     no_matches: No notes match the search.
 related:
     add: Add related note
+    change_parent: Change parent note
     description: Related notes are independent of the tree and visible in both notes.
     done: Done
     empty: No related notes
+    no_parent: No parent note (top level)
     no_results: No matching notes
+    parent: Parent note
     remove: Remove link
+    remove_parent: Move to top level
     top_level: top level
 settings:
     administration: Administration

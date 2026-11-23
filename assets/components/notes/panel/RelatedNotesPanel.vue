@@ -2,67 +2,105 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AiDeniedBadge from '@/components/notes/AiDeniedBadge.vue';
+import NotePicker from '@/components/notes/NotePicker.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { t } from '@/i18n';
 import { useNoteStore } from '@/stores/note';
 import { AiAccess, useNotesStore } from '@/stores/notes';
 
-const MAX_RESULTS = 8;
-
 const router = useRouter();
 const notesStore = useNotesStore();
 const noteStore = useNoteStore();
 
-const isAdding = ref(false);
-const query = ref('');
+const openPicker = ref(null);
 
-function pathOf(note) {
-    return (
-        notesStore
-            .ancestorsOf(note.id)
-            .map((ancestor) => ancestor.title)
-            .join(' / ') || t('related.top_level')
-    );
+const note = computed(() => notesStore.find(noteStore.note.id));
+const parent = computed(() => notesStore.find(note.value?.parentId));
+
+const parentExcludeIds = computed(() => [
+    note.value.id,
+    ...notesStore.descendantIdsOf(note.value.id),
+    ...(parent.value ? [parent.value.id] : []),
+]);
+const relatedExcludeIds = computed(() => [note.value.id, ...noteStore.note.relatedIds]);
+
+function pathOf(relatedNote) {
+    return notesStore.pathOf(relatedNote.id) || t('related.top_level');
 }
 
-const candidates = computed(() => {
-    const normalizedQuery = query.value.trim().toLowerCase();
-
-    return notesStore.notes
-        .filter(
-            (note) =>
-                note.id !== noteStore.note.id &&
-                !noteStore.note.relatedIds.includes(note.id) &&
-                note.title.toLowerCase().includes(normalizedQuery),
-        )
-        .slice(0, MAX_RESULTS);
-});
-
-function open(note) {
-    router.push({ name: 'note', params: { id: note.id } });
+function togglePicker(name) {
+    openPicker.value = openPicker.value === name ? null : name;
 }
 
-function add(note) {
-    noteStore.addRelated(note.id);
-    query.value = '';
+function open(target) {
+    router.push({ name: 'note', params: { id: target.id } });
+}
+
+function setParent(newParent) {
+    notesStore.move(note.value.id, newParent.id);
+    openPicker.value = null;
+}
+
+function addRelated(relatedNote) {
+    noteStore.addRelated(relatedNote.id);
 }
 </script>
 
 <template>
     <p class="related__description">{{ $t('related.description') }}</p>
 
+    <div
+        class="related__item related__item--parent"
+        :class="{ 'related__item--static': !parent }"
+        @click="parent && open(parent)"
+    >
+        <div class="related__text">
+            <span class="related__title">{{ parent?.title ?? $t('related.no_parent') }}</span>
+            <span class="related__path">{{ $t('related.parent') }}</span>
+        </div>
+        <AiDeniedBadge v-if="parent?.aiAccess === AiAccess.DENY" />
+        <BaseButton
+            variant="ghost"
+            square
+            :active="openPicker === 'parent'"
+            :title="$t('related.change_parent')"
+            :aria-label="$t('related.change_parent')"
+            :aria-expanded="openPicker === 'parent'"
+            @click.stop="togglePicker('parent')"
+        >
+            ✎
+        </BaseButton>
+        <BaseButton
+            v-if="parent"
+            variant="ghost"
+            square
+            :title="$t('related.remove_parent')"
+            :aria-label="$t('related.remove_parent')"
+            @click.stop="notesStore.move(note.id, null)"
+        >
+            ×
+        </BaseButton>
+    </div>
+    <NotePicker v-if="openPicker === 'parent'" :exclude-ids="parentExcludeIds" @select="setParent" />
+
     <ul v-if="noteStore.relatedNotes.length" class="related__list">
-        <li v-for="note in noteStore.relatedNotes" :key="note.id" class="related__item" @click="open(note)">
+        <li
+            v-for="relatedNote in noteStore.relatedNotes"
+            :key="relatedNote.id"
+            class="related__item"
+            @click="open(relatedNote)"
+        >
             <div class="related__text">
-                <span class="related__title">{{ note.title }}</span>
-                <span class="related__path">{{ pathOf(note) }}</span>
+                <span class="related__title">{{ relatedNote.title }}</span>
+                <span class="related__path">{{ pathOf(relatedNote) }}</span>
             </div>
-            <AiDeniedBadge v-if="note.aiAccess === AiAccess.DENY" />
+            <AiDeniedBadge v-if="relatedNote.aiAccess === AiAccess.DENY" />
             <BaseButton
                 variant="ghost"
                 square
                 :title="$t('related.remove')"
-                @click.stop="noteStore.removeRelated(note.id)"
+                :aria-label="$t('related.remove')"
+                @click.stop="noteStore.removeRelated(relatedNote.id)"
             >
                 ×
             </BaseButton>
@@ -70,26 +108,10 @@ function add(note) {
     </ul>
     <p v-else class="related__empty">{{ $t('related.empty') }}</p>
 
-    <div v-if="isAdding" class="related__picker">
-        <input
-            v-model="query"
-            type="search"
-            class="related__search"
-            :placeholder="$t('related.search.placeholder', {}, 'fields')"
-        />
-        <ul v-if="candidates.length" class="related__results">
-            <li v-for="note in candidates" :key="note.id">
-                <button type="button" class="related__result" @click="add(note)">
-                    <span class="related__title">{{ note.title }}</span>
-                    <span class="related__path">{{ pathOf(note) }}</span>
-                </button>
-            </li>
-        </ul>
-        <p v-else class="related__no-results">{{ $t('related.no_results') }}</p>
-    </div>
+    <NotePicker v-if="openPicker === 'related'" :exclude-ids="relatedExcludeIds" @select="addRelated" />
 
-    <BaseButton size="md" @click="isAdding = !isAdding">
-        {{ isAdding ? $t('related.done') : $t('related.add') }}
+    <BaseButton size="md" @click="togglePicker('related')">
+        {{ openPicker === 'related' ? $t('related.done') : $t('related.add') }}
     </BaseButton>
 </template>
 
@@ -102,8 +124,7 @@ function add(note) {
         line-height: 1.5;
     }
 
-    &__list,
-    &__results {
+    &__list {
         display: flex;
         flex-direction: column;
         gap: 6px;
@@ -124,6 +145,23 @@ function add(note) {
 
         &:hover {
             border-color: var(--color-border-hover);
+        }
+
+        &--parent {
+            background: var(--color-bg-sunken);
+        }
+
+        &--static {
+            cursor: default;
+
+            &:hover {
+                border-color: var(--color-border-subtle);
+            }
+
+            .related__title {
+                color: var(--color-text-muted);
+                font-weight: 400;
+            }
         }
     }
 
@@ -160,64 +198,6 @@ function add(note) {
         color: var(--color-text-muted);
         font-size: 13px;
         text-align: center;
-    }
-
-    &__picker {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding: 8px;
-        border: 1px solid var(--color-accent-soft);
-        border-radius: var(--radius-md);
-        background: var(--color-surface);
-    }
-
-    &__search {
-        height: 32px;
-        padding: 0 10px;
-        border: 1px solid var(--color-divider);
-        border-radius: var(--radius-sm);
-        outline: none;
-        font-size: 13px;
-
-        &:focus {
-            border-color: var(--color-accent);
-        }
-    }
-
-    &__results {
-        gap: 0;
-        max-height: 220px;
-        overflow: auto;
-    }
-
-    &__result {
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-        width: 100%;
-        padding: 7px 8px;
-        border: none;
-        border-radius: var(--radius-sm);
-        background: transparent;
-        color: var(--color-text);
-        text-align: left;
-        cursor: pointer;
-
-        &:hover {
-            background: var(--color-hover-subtle);
-        }
-
-        .related__title {
-            font-size: 13px;
-            font-weight: 400;
-        }
-    }
-
-    &__no-results {
-        margin: 4px 8px;
-        color: var(--color-text-muted);
-        font-size: 12.5px;
     }
 }
 </style>

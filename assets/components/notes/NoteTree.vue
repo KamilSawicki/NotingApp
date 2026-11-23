@@ -64,13 +64,15 @@ function toggle(note) {
     expandedIds.value = ids;
 }
 
-watch(
-    () => notesStore.selectedId,
-    (selectedId) => {
-        const ancestors = selectedId ? notesStore.ancestorsOf(selectedId) : [];
+const selectedAncestorIds = computed(() =>
+    notesStore.selectedId ? notesStore.ancestorsOf(notesStore.selectedId).map((ancestor) => ancestor.id) : [],
+);
 
-        if (ancestors.some((ancestor) => !expandedIds.value.has(ancestor.id))) {
-            expandedIds.value = new Set([...expandedIds.value, ...ancestors.map((ancestor) => ancestor.id)]);
+watch(
+    () => selectedAncestorIds.value.join('/'),
+    () => {
+        if (selectedAncestorIds.value.some((id) => !expandedIds.value.has(id))) {
+            expandedIds.value = new Set([...expandedIds.value, ...selectedAncestorIds.value]);
         }
     },
     { immediate: true },

@@ -59,6 +59,33 @@ export const useNotesStore = defineStore('notes', () => {
         return ancestors;
     }
 
+    function pathOf(id) {
+        return ancestorsOf(id)
+            .map((ancestor) => ancestor.title)
+            .join(' / ');
+    }
+
+    function descendantIdsOf(id) {
+        const ids = new Set();
+        const walk = (parentId) => {
+            for (const child of childrenOf(parentId)) {
+                ids.add(child.id);
+                walk(child.id);
+            }
+        };
+        walk(id);
+
+        return ids;
+    }
+
+    function move(id, parentId) {
+        const note = find(id);
+
+        if (note && parentId !== id && !descendantIdsOf(id).has(parentId)) {
+            note.parentId = parentId;
+        }
+    }
+
     function select(id) {
         selectedId.value = id;
     }
@@ -71,5 +98,16 @@ export const useNotesStore = defineStore('notes', () => {
         }
     }
 
-    return { notes, selectedId, childrenOf, find, ancestorsOf, select, rename };
+    return {
+        notes,
+        selectedId,
+        childrenOf,
+        find,
+        ancestorsOf,
+        pathOf,
+        descendantIdsOf,
+        select,
+        rename,
+        move,
+    };
 });
