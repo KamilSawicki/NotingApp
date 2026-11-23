@@ -10,4 +10,8 @@
 
 {% block body %}
     <div id="app"></div>
+    {# JSON_HEX_TAG escapes < and >, so no message can close the script element. #}
+    <script type="application/json" id="translations">
+        {{- translations|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_FORCE_OBJECT'))|raw -}}
+    </script>
 {% endblock %}

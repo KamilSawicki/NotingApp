@@ -1,0 +1,38 @@
+home:
+    empty: Select a note from the tree or create a new one.
+    toggle_side_panel: Side panel
+not_found:
+    back: Back to notes
+    title: Page not found
+settings:
+    administration: Administration
+    app_style:
+        description: The default look of notes for all users. It is the lowest level of the cascade, overridden by user styles and note CSS.
+        nav_description: App's global CSS
+        title: App style
+    back: ← Notes
+    logout: Log out
+    style:
+        description: The default look of all your notes. It overrides the app style; the CSS of a single note can still change it.
+        nav_description: User's global CSS
+        title: My note style
+    title: Settings
+    users:
+        description: Registration is disabled — only an administrator creates and deletes accounts.
+        nav_description: Accounts and roles
+        title: Users
+side_panel:
+    close: Close panel
+    empty:
+        css: Select a note to see its style.
+        related: Select a note to see its related notes.
+        versions: Select a note to see its versions.
+    tabs:
+        css: CSS style
+        related: Related
+        versions: Versions
+sidebar:
+    empty: No notes
+    new_root_note: New top-level note
+    settings: Settings
+    tree_label: Note tree

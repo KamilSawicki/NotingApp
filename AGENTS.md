@@ -104,3 +104,12 @@ things up in the project instead of relying on memory:
 - Read the installed source and docblocks under `vendor/`.
 - Docs: https://symfony.com/doc/current/ (switch to the version matching
   `composer.json` if it differs).
+
+## Translations                         
+
+ Split translations into domains: messages, fields, validators, emails. Sort keys alphabetically and keep a nested structure in the YAML files.
+
+Messages use the ICU MessageFormat, so name the files `{domain}+intl-icu.{locale}.yaml`
+(e.g. `messages+intl-icu.en.yaml`). The `+intl-icu` suffix is how Symfony enables ICU for a
+domain; it is not part of the domain name, which stays `messages`, `fields`, etc.
+`tests/Translation/TranslationFilesTest.php` checks the domains, sorting and nesting.

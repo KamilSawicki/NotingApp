@@ -1,0 +1,19 @@
+<script setup>
+import PageHeader from '@/components/layout/PageHeader.vue';
+</script>
+
+<template>
+    <div class="settings-page">
+        <PageHeader :title="$t('settings.app_style.title')" :description="$t('settings.app_style.description')" />
+    </div>
+</template>
+
+<style lang="scss" scoped>
+.settings-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1100px;
+    padding: 32px 36px;
+}
+</style>

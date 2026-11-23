@@ -31,5 +31,24 @@ export default defineConfig([
     js.configs.recommended,
     ...pluginVue.configs['flat/recommended'],
 
+    {
+        name: 'app/translations',
+        files: ['assets/**/*.vue'],
+        rules: {
+            // UI texts come from Symfony translations (translations/*.yaml) through $t().
+            'vue/no-bare-strings-in-template': [
+                'error',
+                {
+                    // The rule's default punctuation, the icon characters used as buttons and the product name.
+                    allowlist: [
+                        ...'( ) , . & + - = * / # % ! ? : [ ] { } < > · • ‐ – — − | × ← →'.split(' '),
+                        'N',
+                        'NotingApp',
+                    ],
+                },
+            ],
+        },
+    },
+
     skipFormatting,
 ]);

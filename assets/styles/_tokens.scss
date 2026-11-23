@@ -1,0 +1,57 @@
+:root {
+    --color-bg: oklch(0.985 0.003 75);
+    --color-bg-sunken: oklch(0.97 0.004 75);
+    --color-surface: oklch(0.995 0.004 85);
+    --color-hover: oklch(0.94 0.006 75);
+    --color-hover-subtle: oklch(0.95 0.006 75);
+    --color-selected: oklch(0.925 0.014 80);
+
+    --color-text: oklch(0.24 0.012 75);
+    --color-text-secondary: oklch(0.4 0.012 75);
+    --color-text-muted: oklch(0.52 0.012 75);
+    --color-text-control: oklch(0.35 0.012 75);
+    --color-text-inverse: oklch(0.985 0.003 75);
+    --color-primary-hover: oklch(0.34 0.012 75);
+
+    --color-border: oklch(0.89 0.006 75);
+    --color-border-strong: oklch(0.88 0.006 75);
+    --color-border-subtle: oklch(0.91 0.005 75);
+    --color-border-hover: oklch(0.75 0.01 75);
+    --color-divider: oklch(0.92 0.005 75);
+
+    --color-accent: oklch(0.5 0.12 150);
+    --color-accent-hover: oklch(0.4 0.12 150);
+    --color-accent-selection: oklch(0.86 0.06 150);
+    --color-accent-drop: oklch(0.9 0.05 150);
+    --color-accent-soft: oklch(0.9 0.03 150);
+    --color-accent-strong: oklch(0.38 0.12 150);
+
+    --color-danger: oklch(0.5 0.17 25);
+    --color-danger-bg: oklch(0.9 0.04 25);
+
+    --color-hidden-text: oklch(0.42 0.1 65);
+    --color-hidden-bg: oklch(0.97 0.035 85);
+    --color-hidden-border: oklch(0.72 0.1 75);
+
+    --color-css-user: oklch(0.42 0.12 150);
+    --color-css-user-bg: oklch(0.94 0.03 150);
+    --color-css-note: oklch(0.45 0.14 320);
+    --color-css-note-bg: oklch(0.95 0.03 320);
+
+    --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-serif: 'IBM Plex Serif', Georgia, serif;
+    --font-size-base: 14px;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 999px;
+
+    --shadow-popover: 0 12px 32px oklch(0.2 0.02 75 / 0.12);
+    --shadow-overlay: -12px 0 32px oklch(0.2 0.02 75 / 0.14);
+
+    --sidebar-width: 268px;
+    --settings-nav-width: 248px;
+    --side-panel-width: 320px;
+}
