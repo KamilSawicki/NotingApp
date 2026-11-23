@@ -26,28 +26,17 @@ const router = createRouter({
         {
             path: '/settings',
             component: () => import('@/layouts/SettingsLayout.vue'),
+            meta: { requiresAdmin: true },
             children: [
                 {
                     path: '',
                     name: 'settings',
-                    redirect: { name: 'settings-style' },
-                },
-                {
-                    path: 'style',
-                    name: 'settings-style',
-                    component: () => import('@/views/settings/SettingsStyleView.vue'),
-                },
-                {
-                    path: 'app-style',
-                    name: 'settings-app-style',
-                    component: () => import('@/views/settings/SettingsAppStyleView.vue'),
-                    meta: { requiresAdmin: true },
+                    redirect: { name: 'settings-users' },
                 },
                 {
                     path: 'users',
                     name: 'settings-users',
                     component: () => import('@/views/settings/SettingsUsersView.vue'),
-                    meta: { requiresAdmin: true },
                 },
             ],
         },
@@ -60,8 +49,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-    if (to.meta.requiresAdmin && !useUserStore().isAdmin) {
-        return { name: 'settings-style' };
+    if (to.matched.some((route) => route.meta.requiresAdmin) && !useUserStore().isAdmin) {
+        return { name: 'home' };
     }
 });
 

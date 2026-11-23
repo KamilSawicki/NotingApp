@@ -8,10 +8,12 @@ import NoteTree from '@/components/notes/NoteTree.vue';
 import { t } from '@/i18n';
 import { useLayoutStore } from '@/stores/layout';
 import { useNotesStore } from '@/stores/notes';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 const layout = useLayoutStore();
 const notesStore = useNotesStore();
+const userStore = useUserStore();
 const query = ref('');
 
 function createNote() {
@@ -60,7 +62,8 @@ function createNote() {
 
         <footer class="sidebar__footer">
             <CurrentUser class="sidebar__user" />
-            <BaseButton :to="{ name: 'settings' }">{{ $t('sidebar.settings') }}</BaseButton>
+            <BaseButton v-if="userStore.isAdmin" :to="{ name: 'settings' }">{{ $t('sidebar.settings') }}</BaseButton>
+            <BaseButton v-else href="/logout">{{ $t('settings.logout') }}</BaseButton>
         </footer>
     </aside>
 </template>

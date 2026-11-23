@@ -25,6 +25,10 @@ const props = defineProps({
         type: [String, Object],
         default: null,
     },
+    href: {
+        type: String,
+        default: null,
+    },
     type: {
         type: String,
         default: 'button',
@@ -44,6 +48,9 @@ const classes = computed(() => [
     <RouterLink v-if="to" :to="to" :class="classes">
         <slot />
     </RouterLink>
+    <a v-else-if="href" :href="href" :class="classes">
+        <slot />
+    </a>
     <button v-else :type="type" :class="classes">
         <slot />
     </button>

@@ -9,3 +9,16 @@ related:
 sidebar:
     search:
         placeholder: Search the tree…
+user:
+    login:
+        label: Login
+    name:
+        label: Name
+    password:
+        label: Password
+        new_label: New password
+        unchanged: unchanged
+    password_repeat:
+        label: Repeat password
+    role:
+        label: Role

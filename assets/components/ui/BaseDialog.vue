@@ -6,6 +6,10 @@ defineProps({
         type: String,
         required: true,
     },
+    width: {
+        type: Number,
+        default: 400,
+    },
 });
 
 const emit = defineEmits(['close']);
@@ -22,7 +26,13 @@ function onBackdropClick(event) {
 </script>
 
 <template>
-    <dialog ref="dialog" class="dialog" @close="emit('close')" @click="onBackdropClick">
+    <dialog
+        ref="dialog"
+        class="dialog"
+        :style="{ maxWidth: `${width}px` }"
+        @close="emit('close')"
+        @click="onBackdropClick"
+    >
         <div class="dialog__panel">
             <h2 class="dialog__title">{{ title }}</h2>
             <slot />
@@ -36,7 +46,6 @@ function onBackdropClick(event) {
 <style lang="scss" scoped>
 .dialog {
     width: 100%;
-    max-width: 400px;
     padding: 0;
     border: none;
     border-radius: var(--radius-lg);

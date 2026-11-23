@@ -2,40 +2,17 @@
 import { computed } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import { t } from '@/i18n';
-import { useUserStore } from '@/stores/user';
+import { useUsersStore } from '@/stores/users';
 
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 
-const allSections = [
+const items = computed(() => [
     {
-        heading: null,
-        items: [
-            {
-                to: { name: 'settings-style' },
-                label: t('settings.style.title'),
-                description: t('settings.style.nav_description'),
-            },
-        ],
+        to: { name: 'settings-users' },
+        label: t('settings.users.title'),
+        description: t('settings.users.nav_description', { count: usersStore.users.length }),
     },
-    {
-        heading: t('settings.administration'),
-        adminOnly: true,
-        items: [
-            {
-                to: { name: 'settings-app-style' },
-                label: t('settings.app_style.title'),
-                description: t('settings.app_style.nav_description'),
-            },
-            {
-                to: { name: 'settings-users' },
-                label: t('settings.users.title'),
-                description: t('settings.users.nav_description'),
-            },
-        ],
-    },
-];
-
-const sections = computed(() => allSections.filter((section) => !section.adminOnly || userStore.isAdmin));
+]);
 </script>
 
 <template>
@@ -46,20 +23,17 @@ const sections = computed(() => allSections.filter((section) => !section.adminOn
             }}</BaseButton>
             <h1 class="settings-layout__title">{{ $t('settings.title') }}</h1>
 
-            <nav :aria-label="$t('settings.title')">
-                <section v-for="(section, index) in sections" :key="index" class="settings-layout__section">
-                    <h2 v-if="section.heading" class="settings-layout__heading">{{ section.heading }}</h2>
-                    <RouterLink
-                        v-for="item in section.items"
-                        :key="item.label"
-                        :to="item.to"
-                        class="settings-layout__item"
-                        active-class="settings-layout__item--active"
-                    >
-                        <span class="settings-layout__item-label">{{ item.label }}</span>
-                        <span class="settings-layout__item-description">{{ item.description }}</span>
-                    </RouterLink>
-                </section>
+            <nav class="settings-layout__items" :aria-label="$t('settings.title')">
+                <RouterLink
+                    v-for="item in items"
+                    :key="item.label"
+                    :to="item.to"
+                    class="settings-layout__item"
+                    active-class="settings-layout__item--active"
+                >
+                    <span class="settings-layout__item-label">{{ item.label }}</span>
+                    <span class="settings-layout__item-description">{{ item.description }}</span>
+                </RouterLink>
             </nav>
 
             <a href="/logout" class="settings-layout__logout">{{ $t('settings.logout') }}</a>
@@ -100,19 +74,9 @@ const sections = computed(() => allSections.filter((section) => !section.adminOn
         font-weight: 600;
     }
 
-    &__section {
+    &__items {
         display: flex;
         flex-direction: column;
-    }
-
-    &__heading {
-        margin: 0;
-        padding: 16px 10px 6px;
-        color: var(--color-text-muted);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
     }
 
     &__item {

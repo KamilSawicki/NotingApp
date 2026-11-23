@@ -100,21 +100,12 @@ related:
     remove_parent: Move to top level
     top_level: top level
 settings:
-    administration: Administration
-    app_style:
-        description: The default look of notes for all users. It is the lowest level of the cascade, overridden by user styles and note CSS.
-        nav_description: App's global CSS
-        title: App style
     back: ← Notes
     logout: Log out
-    style:
-        description: The default look of all your notes. It overrides the app style; the CSS of a single note can still change it.
-        nav_description: User's global CSS
-        title: My note style
     title: Settings
     users:
         description: Registration is disabled — only an administrator creates and deletes accounts.
-        nav_description: Accounts and roles
+        nav_description: '{count, plural, one {# account} other {# accounts}}'
         title: Users
 side_panel:
     close: Close panel
@@ -135,6 +126,32 @@ user:
     roles:
         admin: Administrator
         user: User
+users:
+    add: + Add user
+    columns:
+        actions: Actions
+        last_login: Last login
+        login: Login
+        name: Name
+        role: Role
+    delete:
+        button: Delete
+        confirm: Delete account
+        message: The account “{login}” will be deleted together with all of the user's notes.
+        title: Delete account?
+    edit: Edit
+    form:
+        cancel: Cancel
+        errors:
+            login_taken: This login is already taken.
+            password_mismatch: The passwords do not match.
+            password_required: Set a password for the new account.
+            required: Fill in the name and the login.
+        save: Save
+        title_edit: Edit user
+        title_new: New user
+    never: never
+    self: (you)
 versions:
     created: created
     current: Current version
