@@ -41,3 +41,7 @@ sidebar:
     new_root_note: New top-level note
     settings: Settings
     tree_label: Note tree
+user:
+    roles:
+        admin: Administrator
+        user: User

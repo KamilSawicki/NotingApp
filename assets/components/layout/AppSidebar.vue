@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BrandLogo from '@/components/ui/BrandLogo.vue';
+import CurrentUser from '@/components/layout/CurrentUser.vue';
 import NoteTree from '@/components/notes/NoteTree.vue';
 
 const query = ref('');
@@ -28,6 +29,7 @@ const query = ref('');
         </nav>
 
         <footer class="sidebar__footer">
+            <CurrentUser class="sidebar__user" />
             <BaseButton :to="{ name: 'settings' }">{{ $t('sidebar.settings') }}</BaseButton>
         </footer>
     </aside>
@@ -81,9 +83,14 @@ const query = ref('');
 
     &__footer {
         display: flex;
-        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
         padding: 10px 12px;
         border-top: 1px solid var(--color-border-subtle);
+    }
+
+    &__user {
+        flex: 1;
     }
 }
 </style>
